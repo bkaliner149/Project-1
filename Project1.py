@@ -26,6 +26,8 @@ matches = [s for s in linesList if "Purpose" in s]
 randomCompanies['Purpose'] = matches
 randomCompanies['Title'] = companyList
 
+randomCompanies['Purpose'] = randomCompanies['Purpose'].str.replace('Purpose: ', '')
+
 randomCompanies.to_csv('CompanyPull.csv')
 
 print("done")
