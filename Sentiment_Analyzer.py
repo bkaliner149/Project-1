@@ -28,29 +28,31 @@ allCompanies = allCompanies.append(steve_data)
 #Define stopwords
 stopcorpus: typing.List = stopwords.words('english')
 
-#Define function to remove stop words
+#Define functions
 def lose_stop_words(removal:str,stop_words: typing.List):
     return [x for x in removal if x not in stop_words]
 
-#Define function to make companies list into string
-def make_string(companies):
+def join_function(companies):
     return ' '.join(companies)
 
 #Run functions
 allCompanies['Purpose'] = allCompanies['Purpose'].astype(str).apply(lambda x: lose_stop_words(x.split(),stopcorpus))
-allCompanies['Purpose'] = allCompanies['Purpose'].apply(make_string)
+allCompanies['Purpose'] = allCompanies['Purpose'].apply(join_function)
 
-#Set up tokenizer and lemmatizer
-tokenize = nltk.tokenize.WhitespaceTokenizer()
-lemmatize = nltk.stem.WordNetLemmatizer()
+#Set up tokenizer and lemmetizer
+w_tokenizer = nltk.tokenize.WhitespaceTokenizer()
+lemmatizer = nltk.stem.WordNetLemmatizer()
 
-#Define function to use lemmatizer and tokenizer
-def rootWord(text):
-    return [lemmatize.lemmatize(word) for word in tokenize.tokenize(text)]
+def lemmatize_text(text):
+    return [lemmatizer.lemmatize(word) for word in w_tokenizer.tokenize(text)]
 
-#Apply root word function
-allCompanies['Purpose'] = allCompanies['Purpose'].astype(str).apply(rootWord)
-allCompanies['Purpose'] = allCompanies['Purpose'].apply(make_string)
+df = pd.DataFrame(['this was cheesy', 'she likes these books', 'wow this is great'], columns=['text'])
+df['text_lemmatized'] = df.text.apply(lemmatize_text)
+
+#Apply lemmetize function
+allCompanies['Purpose'] = allCompanies['Purpose'].astype(str)
+allCompanies['Purpose'] = allCompanies['Purpose'].apply(lemmatize_text)
+allCompanies['Purpose'] = allCompanies['Purpose'].apply(join_function)
 
 #Sentiment Analysis
 sentiment = []
