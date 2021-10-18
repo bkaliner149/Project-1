@@ -14,19 +14,11 @@ mike_data['Purpose'] = mike_data['Purpose'].str.replace('Purpose: ', '')
 steve_data['Purpose'] = steve_data['Purpose'].str.replace('Purpose: ', '')
 brett_data = brett_data.iloc[: , 1:]
 
-print(mike_data)
-print(steve_data)
 
 allCompanies = pd.DataFrame(columns=['Title', 'Purpose'])
 allCompanies = allCompanies.append(mike_data)
 allCompanies = allCompanies.append(brett_data)
 allCompanies = allCompanies.append(steve_data)
-allCompanies.rename( columns={'Unnamed: 0':'axis'}, inplace=True )
-allCompanies.set_index('axis', inplace=True)
-
-
-allCompanies[['junk','Purpose']] = allCompanies.Purpose.str.split(": ", expand=True)
-allCompanies.drop(['junk'], axis=1, inplace=True)
 
 stopcorpus: typing.List = stopwords.words('english')
 def remove_words(em:str,list_of_words_to_remove: typing.List):
