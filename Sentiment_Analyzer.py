@@ -66,3 +66,5 @@ worst_sentiment = allCompanies.head(5)
 best_sentiment = allCompanies.tail(5)
 print(best_sentiment)
 print(worst_sentiment)
+
+allCompanies.to_csv('allCompanies.csv')
