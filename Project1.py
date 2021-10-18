@@ -8,26 +8,26 @@ from bs4 import BeautifulSoup
 
 #Create empty dataframe for companies
 randomCompanies = pd.DataFrame(columns=['Title', 'Purpose'])
-companyList = []
-linesList = []
+Company = []
+Information = []
 
 #Scrape website for name and purpose of company
-for x in range(50):
+for company in range(50):
     url = "http://3.85.131.173:8000/random_company"
-    page = requests.get(url)
-    data = page.text
-    soup = BeautifulSoup(data, 'html.parser')
-    for title in soup.find_all('title'):
-        companyList.append(title.get_text())
+    requestURL = requests.get(url)
+    text = requestURL.text
+    Parse = BeautifulSoup(text, 'html.parser')
+    for title in Parse.find_all('title'):
+        Company.append(title.get_text())
 
 
-    for li in soup.find_all('li'):
-        linesList.append(li.get_text())
+    for line in Parse.find_all('li'):
+        Information.append(line.get_text())
 
 #Fill dataframe with scrape
-matches = [s for s in linesList if "Purpose" in s]
-randomCompanies['Purpose'] = matches
-randomCompanies['Title'] = companyList
+purpose = [scrape for scrape in Information if "Purpose" in scrape]
+randomCompanies['Purpose'] = purpose
+randomCompanies['Title'] = Company
 
 #Get rid of word "purpose"
 randomCompanies['Purpose'] = randomCompanies['Purpose'].str.replace('Purpose: ', '')

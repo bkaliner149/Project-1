@@ -29,42 +29,42 @@ allCompanies = allCompanies.append(steve_data)
 stopcorpus: typing.List = stopwords.words('english')
 
 #Define function to remove stop words
-def remove_words(em:str,list_of_words_to_remove: typing.List):
-    return [item for item in em if item not in list_of_words_to_remove]
+def lose_stop_words(removal:str,stop_words: typing.List):
+    return [x for x in removal if x not in stop_words]
 
-#Define function to make list into string
-def collapse_list_to_string(string_list):
-    return ' '.join(string_list)
+#Define function to make companies list into string
+def make_string(companies):
+    return ' '.join(companies)
 
 #Run functions
-allCompanies['Purpose'] = allCompanies['Purpose'].astype(str).apply(lambda x: remove_words(x.split(),stopcorpus))
-allCompanies['Purpose'] = allCompanies['Purpose'].apply(collapse_list_to_string)
+allCompanies['Purpose'] = allCompanies['Purpose'].astype(str).apply(lambda x: lose_stop_words(x.split(),stopcorpus))
+allCompanies['Purpose'] = allCompanies['Purpose'].apply(make_string)
 
 #Set up tokenizer and lemmatizer
-tokenizer = nltk.tokenize.WhitespaceTokenizer()
+token = nltk.tokenize.WhitespaceTokenizer()
 lemmatizer = nltk.stem.WordNetLemmatizer()
 
 #Define function to use lemmatizer and tokenizer
-def root_word(text):
-    return [lemmatizer.lemmatize(w) for w in tokenizer.tokenize(text)]
+def rootWord(text):
+    return [lemmatizer.lemmatize(w) for w in token.tokenize(text)]
 
 #Apply root word function
-allCompanies['Purpose'] = allCompanies['Purpose'].astype(str).apply(root_word)
-allCompanies['Purpose'] = allCompanies['Purpose'].apply(collapse_list_to_string)
+allCompanies['Purpose'] = allCompanies['Purpose'].astype(str).apply(rootWord)
+allCompanies['Purpose'] = allCompanies['Purpose'].apply(make_string)
 
 #Sentiment Analysis
 sentiment = []
-analyzer = SentimentIntensityAnalyzer()
+analyze = SentimentIntensityAnalyzer()
 for purpose in allCompanies.Purpose:
-    vs = analyzer.polarity_scores(purpose)
+    vs = analyze.polarity_scores(purpose)
     sentiment.append(vs["compound"])
 allCompanies['Sentiment'] = sentiment
 
 #Sort the companies by sentiment score
 allCompanies.sort_values(by=['Sentiment'], inplace=True)
-worst_sentiment = allCompanies.head(5)
-best_sentiment = allCompanies.tail(5)
-print(best_sentiment)
-print(worst_sentiment)
+Lowest = allCompanies.head(5)
+Highest = allCompanies.tail(5)
+print(Lowest)
+print(Highest)
 
 allCompanies.to_csv('allCompanies.csv')
