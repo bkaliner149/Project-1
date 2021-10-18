@@ -41,12 +41,12 @@ allCompanies['Purpose'] = allCompanies['Purpose'].astype(str).apply(lambda x: lo
 allCompanies['Purpose'] = allCompanies['Purpose'].apply(make_string)
 
 #Set up tokenizer and lemmatizer
-token = nltk.tokenize.WhitespaceTokenizer()
-lemmatizer = nltk.stem.WordNetLemmatizer()
+tokenize = nltk.tokenize.WhitespaceTokenizer()
+lemmatize = nltk.stem.WordNetLemmatizer()
 
 #Define function to use lemmatizer and tokenizer
 def rootWord(text):
-    return [lemmatizer.lemmatize(w) for w in token.tokenize(text)]
+    return [lemmatize.lemmatize(word) for word in tokenize.tokenize(text)]
 
 #Apply root word function
 allCompanies['Purpose'] = allCompanies['Purpose'].astype(str).apply(rootWord)
