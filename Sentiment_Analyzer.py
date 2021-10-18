@@ -21,20 +21,14 @@ allCompanies = allCompanies.append(brett_data)
 allCompanies = allCompanies.append(steve_data)
 
 stopcorpus: typing.List = stopwords.words('english')
+
 def remove_words(em:str,list_of_words_to_remove: typing.List):
     return [item for item in em if item not in list_of_words_to_remove]
 def collapse_list_to_string(string_list):
     return ' '.join(string_list)
 
-def remove_apostrophes(text):
-    text = text.replace("'", "")
-    text = text.replace('"', "")
-    text = text.replace('`', "")
-    return text
-
 allCompanies['Purpose'] = allCompanies['Purpose'].astype(str).apply(lambda x: remove_words(x.split(),stopcorpus))
 allCompanies['Purpose'] = allCompanies['Purpose'].apply(collapse_list_to_string)
-allCompanies['Purpose'] = allCompanies['Purpose'].apply(remove_apostrophes)
 
 tokenizer = nltk.tokenize.WhitespaceTokenizer()
 lemmatizer = nltk.stem.WordNetLemmatizer()
